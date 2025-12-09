@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
-import {Ownable2Step, Ownable} from "@openzeppelin/contracts/access/Ownable2Step.sol";
-import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import { MerkleProof } from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import { Ownable2Step, Ownable } from "@openzeppelin/contracts/access/Ownable2Step.sol";
+import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import { Pausable } from "@openzeppelin/contracts/utils/Pausable.sol";
 
 /// @title ACTXAirdrop
 /// @notice Merkle-tree based airdrop contract with KYC gating support
@@ -32,7 +32,14 @@ contract ACTXAirdrop is Ownable2Step, ReentrancyGuard, Pausable {
     mapping(address => bool) public isKYCVerified;
     bool public kycRequired;
 
-    event CampaignCreated(uint256 indexed campaignId, bytes32 merkleRoot, uint256 totalAllocation, uint256 startTime, uint256 endTime, string description);
+    event CampaignCreated(
+        uint256 indexed campaignId,
+        bytes32 merkleRoot,
+        uint256 totalAllocation,
+        uint256 startTime,
+        uint256 endTime,
+        string description
+    );
     event TokensClaimed(uint256 indexed campaignId, address indexed claimant, uint256 amount, uint256 timestamp);
     event CampaignDeactivated(uint256 indexed campaignId);
     event TokensRecovered(uint256 indexed campaignId, uint256 amount);
@@ -105,11 +112,19 @@ contract ACTXAirdrop is Ownable2Step, ReentrancyGuard, Pausable {
         emit CampaignDeactivated(campaignId);
     }
 
-    function claim(uint256 campaignId, uint256 amount, bytes32[] calldata merkleProof) external nonReentrant whenNotPaused {
+    function claim(uint256 campaignId, uint256 amount, bytes32[] calldata merkleProof)
+        external
+        nonReentrant
+        whenNotPaused
+    {
         _claim(campaignId, msg.sender, amount, merkleProof);
     }
 
-    function claimFor(uint256 campaignId, address claimant, uint256 amount, bytes32[] calldata merkleProof) external nonReentrant whenNotPaused {
+    function claimFor(uint256 campaignId, address claimant, uint256 amount, bytes32[] calldata merkleProof)
+        external
+        nonReentrant
+        whenNotPaused
+    {
         if (claimant == address(0)) revert ZeroAddress();
         _claim(campaignId, claimant, amount, merkleProof);
     }
@@ -154,7 +169,9 @@ contract ACTXAirdrop is Ownable2Step, ReentrancyGuard, Pausable {
             if (accounts[i] == address(0)) revert ZeroAddress();
             isKYCVerified[accounts[i]] = statuses[i];
             emit KYCStatusUpdated(accounts[i], statuses[i]);
-            unchecked { ++i; }
+            unchecked {
+                ++i;
+            }
         }
     }
 
@@ -182,21 +199,37 @@ contract ACTXAirdrop is Ownable2Step, ReentrancyGuard, Pausable {
         }
     }
 
-    function getCampaign(uint256 campaignId) external view returns (
-        bytes32 merkleRoot,
-        uint256 totalAllocation,
-        uint256 totalClaimed,
-        uint256 startTime,
-        uint256 endTime,
-        bool isActive,
-        string memory description
-    ) {
+    function getCampaign(uint256 campaignId)
+        external
+        view
+        returns (
+            bytes32 merkleRoot,
+            uint256 totalAllocation,
+            uint256 totalClaimed,
+            uint256 startTime,
+            uint256 endTime,
+            bool isActive,
+            string memory description
+        )
+    {
         if (campaignId >= campaignCount) revert InvalidCampaign();
         Campaign memory campaign = campaigns[campaignId];
-        return (campaign.merkleRoot, campaign.totalAllocation, campaign.totalClaimed, campaign.startTime, campaign.endTime, campaign.isActive, campaign.description);
+        return (
+            campaign.merkleRoot,
+            campaign.totalAllocation,
+            campaign.totalClaimed,
+            campaign.startTime,
+            campaign.endTime,
+            campaign.isActive,
+            campaign.description
+        );
     }
 
-    function canClaim(uint256 campaignId, address claimant, uint256 amount, bytes32[] calldata merkleProof) external view returns (bool canClaim, string memory reason) {
+    function canClaim(uint256 campaignId, address claimant, uint256 amount, bytes32[] calldata merkleProof)
+        external
+        view
+        returns (bool canClaim, string memory reason)
+    {
         if (campaignId >= campaignCount) return (false, "Invalid campaign");
 
         Campaign memory campaign = campaigns[campaignId];
@@ -219,10 +252,17 @@ contract ACTXAirdrop is Ownable2Step, ReentrancyGuard, Pausable {
             if (campaigns[i].isActive && block.timestamp <= campaigns[i].endTime) {
                 total += campaigns[i].totalAllocation - campaigns[i].totalClaimed;
             }
-            unchecked { ++i; }
+            unchecked {
+                ++i;
+            }
         }
     }
 
-    function pause() external onlyOwner { _pause(); }
-    function unpause() external onlyOwner { _unpause(); }
+    function pause() external onlyOwner {
+        _pause();
+    }
+
+    function unpause() external onlyOwner {
+        _unpause();
+    }
 }

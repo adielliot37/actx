@@ -1,14 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {ERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
-import {ERC20BurnableUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol";
-import {ERC20PermitUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20PermitUpgradeable.sol";
-import {AccessControlUpgradeable} from "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
-import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import {PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
-import {ReentrancyGuardUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
+import { ERC20Upgradeable } from "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
+import {
+    ERC20BurnableUpgradeable
+} from "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol";
+import {
+    ERC20PermitUpgradeable
+} from "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20PermitUpgradeable.sol";
+import { AccessControlUpgradeable } from "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
+import { UUPSUpgradeable } from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import { Initializable } from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import { PausableUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
+import { ReentrancyGuardUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
 /// @title ACTXToken
 /// @notice ERC-20 rewards token with UUPS upgradeability, role-based access, and transaction tax
@@ -70,12 +74,12 @@ contract ACTXToken is
         _disableInitializers();
     }
 
-    function initialize(
-        address treasury,
-        address reservoir,
-        uint256 initialTaxRateBP,
-        uint256 rewardPoolAllocation
-    ) external initializer notZeroAddress(treasury) notZeroAddress(reservoir) {
+    function initialize(address treasury, address reservoir, uint256 initialTaxRateBP, uint256 rewardPoolAllocation)
+        external
+        initializer
+        notZeroAddress(treasury)
+        notZeroAddress(reservoir)
+    {
         if (initialTaxRateBP > MAX_TAX_RATE_BP) {
             revert TaxRateTooHigh(initialTaxRateBP, MAX_TAX_RATE_BP);
         }
@@ -114,10 +118,14 @@ contract ACTXToken is
         }
     }
 
-    function distributeReward(
-        address recipient,
-        uint256 amount
-    ) external nonReentrant whenNotPaused onlyRole(REWARD_MANAGER_ROLE) notZeroAddress(recipient) notZeroAmount(amount) {
+    function distributeReward(address recipient, uint256 amount)
+        external
+        nonReentrant
+        whenNotPaused
+        onlyRole(REWARD_MANAGER_ROLE)
+        notZeroAddress(recipient)
+        notZeroAmount(amount)
+    {
         if (amount > _rewardPoolBalance) {
             revert InsufficientRewardPool(amount, _rewardPoolBalance);
         }
@@ -130,17 +138,21 @@ contract ACTXToken is
         emit LeaderboardAction(recipient, "REWARD", amount, abi.encode(block.timestamp, _totalRewardsDistributed));
     }
 
-    function batchDistributeRewards(
-        address[] calldata recipients,
-        uint256[] calldata amounts
-    ) external nonReentrant whenNotPaused onlyRole(REWARD_MANAGER_ROLE) {
+    function batchDistributeRewards(address[] calldata recipients, uint256[] calldata amounts)
+        external
+        nonReentrant
+        whenNotPaused
+        onlyRole(REWARD_MANAGER_ROLE)
+    {
         require(recipients.length == amounts.length, "ACTXToken: arrays length mismatch");
         require(recipients.length > 0, "ACTXToken: empty arrays");
 
         uint256 totalAmount;
         for (uint256 i = 0; i < amounts.length;) {
             totalAmount += amounts[i];
-            unchecked { ++i; }
+            unchecked {
+                ++i;
+            }
         }
 
         if (totalAmount > _rewardPoolBalance) {
@@ -156,7 +168,9 @@ contract ACTXToken is
 
             _transfer(_treasuryAddress, recipients[i], amounts[i]);
             emit RewardDistributed(recipients[i], amounts[i], _rewardPoolBalance, block.timestamp);
-            unchecked { ++i; }
+            unchecked {
+                ++i;
+            }
         }
     }
 
@@ -175,7 +189,11 @@ contract ACTXToken is
         emit TaxRateUpdated(oldRate, newTaxRateBP);
     }
 
-    function setReservoirAddress(address newReservoir) external onlyRole(TAX_MANAGER_ROLE) notZeroAddress(newReservoir) {
+    function setReservoirAddress(address newReservoir)
+        external
+        onlyRole(TAX_MANAGER_ROLE)
+        notZeroAddress(newReservoir)
+    {
         address oldReservoir = _reservoirAddress;
         _reservoirAddress = newReservoir;
         _taxExempt[newReservoir] = true;
@@ -227,28 +245,67 @@ contract ACTXToken is
         _unpause();
     }
 
-    function _authorizeUpgrade(address newImplementation) internal override onlyRole(UPGRADER_ROLE) notZeroAddress(newImplementation) {
+    function _authorizeUpgrade(address newImplementation)
+        internal
+        override
+        onlyRole(UPGRADER_ROLE)
+        notZeroAddress(newImplementation)
+    {
         _version++;
         emit ContractUpgraded(newImplementation, _version);
     }
 
-    function rewardPoolBalance() external view returns (uint256) { return _rewardPoolBalance; }
-    function totalRewardsDistributed() external view returns (uint256) { return _totalRewardsDistributed; }
-    function taxRateBasisPoints() external view returns (uint256) { return _taxRateBasisPoints; }
-    function reservoirAddress() external view returns (address) { return _reservoirAddress; }
-    function treasuryAddress() external view returns (address) { return _treasuryAddress; }
-    function isTaxExempt(address account) external view returns (bool) { return _taxExempt[account]; }
-    function version() external view returns (uint256) { return _version; }
-    function isRewardManager(address account) external view returns (bool) { return hasRole(REWARD_MANAGER_ROLE, account); }
+    function rewardPoolBalance() external view returns (uint256) {
+        return _rewardPoolBalance;
+    }
 
-    function getTokenStats() external view returns (
-        uint256 totalSupply_,
-        uint256 treasuryBalance_,
-        uint256 rewardPool_,
-        uint256 totalDistributed_,
-        uint256 currentTaxRate_,
-        uint256 contractVersion_
-    ) {
-        return (totalSupply(), balanceOf(_treasuryAddress), _rewardPoolBalance, _totalRewardsDistributed, _taxRateBasisPoints, _version);
+    function totalRewardsDistributed() external view returns (uint256) {
+        return _totalRewardsDistributed;
+    }
+
+    function taxRateBasisPoints() external view returns (uint256) {
+        return _taxRateBasisPoints;
+    }
+
+    function reservoirAddress() external view returns (address) {
+        return _reservoirAddress;
+    }
+
+    function treasuryAddress() external view returns (address) {
+        return _treasuryAddress;
+    }
+
+    function isTaxExempt(address account) external view returns (bool) {
+        return _taxExempt[account];
+    }
+
+    function version() external view returns (uint256) {
+        return _version;
+    }
+
+    function isRewardManager(address account) external view returns (bool) {
+        return hasRole(REWARD_MANAGER_ROLE, account);
+    }
+
+    function getTokenStats()
+        external
+        view
+        returns (
+            uint256 totalSupply_,
+            uint256 treasuryBalance_,
+            uint256 rewardPool_,
+            uint256 totalDistributed_,
+            uint256 currentTaxRate_,
+            uint256 contractVersion_
+        )
+    {
+        return (
+            totalSupply(),
+            balanceOf(_treasuryAddress),
+            _rewardPoolBalance,
+            _totalRewardsDistributed,
+            _taxRateBasisPoints,
+            _version
+        );
     }
 }

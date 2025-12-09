@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {Test, console} from "forge-std/Test.sol";
-import {ACTXToken} from "../src/ACTXToken.sol";
-import {ACTXAirdrop} from "../src/Airdrop.sol";
-import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
+import { Test, console } from "forge-std/Test.sol";
+import { ACTXToken } from "../src/ACTXToken.sol";
+import { ACTXAirdrop } from "../src/Airdrop.sol";
+import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 
 /**
  * @title SimpleMerkle
@@ -364,7 +364,7 @@ contract ACTXAirdropTest is Test {
         vm.prank(owner);
         airdrop.updateMerkleRoot(0, newRoot);
 
-        (bytes32 root,,,,,, ) = airdrop.getCampaign(0);
+        (bytes32 root,,,,,,) = airdrop.getCampaign(0);
         assertEq(root, newRoot);
     }
 

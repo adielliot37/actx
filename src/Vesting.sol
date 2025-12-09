@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {Ownable2Step, Ownable} from "@openzeppelin/contracts/access/Ownable2Step.sol";
-import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import { Ownable2Step, Ownable } from "@openzeppelin/contracts/access/Ownable2Step.sol";
+import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 /// @title ACTXVesting
 /// @notice Linear vesting contract with cliff period for team and advisors
@@ -31,7 +31,13 @@ contract ACTXVesting is Ownable2Step, ReentrancyGuard {
     uint256 public totalReleased;
     bool public vestingCreationPaused;
 
-    event VestingScheduleCreated(address indexed beneficiary, uint256 totalAmount, uint256 startTime, uint256 cliffDuration, uint256 vestingDuration);
+    event VestingScheduleCreated(
+        address indexed beneficiary,
+        uint256 totalAmount,
+        uint256 startTime,
+        uint256 cliffDuration,
+        uint256 vestingDuration
+    );
     event TokensReleased(address indexed beneficiary, uint256 amount, uint256 timestamp);
     event VestingRevoked(address indexed beneficiary, uint256 unvestedAmount, uint256 timestamp);
     event VestingCreationPaused(bool paused);
@@ -105,10 +111,17 @@ contract ACTXVesting is Ownable2Step, ReentrancyGuard {
         uint256[] calldata _amounts,
         uint256[] calldata _startTimes
     ) external onlyOwner {
-        require(_beneficiaries.length == _amounts.length && _amounts.length == _startTimes.length, "ACTXVesting: arrays length mismatch");
+        require(
+            _beneficiaries.length == _amounts.length && _amounts.length == _startTimes.length,
+            "ACTXVesting: arrays length mismatch"
+        );
         for (uint256 i = 0; i < _beneficiaries.length;) {
-            _createVestingSchedule(_beneficiaries[i], _amounts[i], _startTimes[i], DEFAULT_CLIFF_DURATION, DEFAULT_VESTING_DURATION);
-            unchecked { ++i; }
+            _createVestingSchedule(
+                _beneficiaries[i], _amounts[i], _startTimes[i], DEFAULT_CLIFF_DURATION, DEFAULT_VESTING_DURATION
+            );
+            unchecked {
+                ++i;
+            }
         }
     }
 
@@ -147,7 +160,9 @@ contract ACTXVesting is Ownable2Step, ReentrancyGuard {
                     emit TokensReleased(_beneficiaries[i], amount, block.timestamp);
                 }
             }
-            unchecked { ++i; }
+            unchecked {
+                ++i;
+            }
         }
     }
 
@@ -193,22 +208,35 @@ contract ACTXVesting is Ownable2Step, ReentrancyGuard {
                 beneficiaries[i] = newBeneficiary;
                 break;
             }
-            unchecked { ++i; }
+            unchecked {
+                ++i;
+            }
         }
 
         emit BeneficiaryChanged(oldBeneficiary, newBeneficiary);
     }
 
-    function getVestingSchedule(address beneficiary) external view returns (
-        uint256 totalAmount,
-        uint256 releasedAmount,
-        uint256 startTime,
-        uint256 cliffDuration,
-        uint256 vestingDuration,
-        bool revoked
-    ) {
+    function getVestingSchedule(address beneficiary)
+        external
+        view
+        returns (
+            uint256 totalAmount,
+            uint256 releasedAmount,
+            uint256 startTime,
+            uint256 cliffDuration,
+            uint256 vestingDuration,
+            bool revoked
+        )
+    {
         VestingSchedule memory schedule = vestingSchedules[beneficiary];
-        return (schedule.totalAmount, schedule.releasedAmount, schedule.startTime, schedule.cliffDuration, schedule.vestingDuration, schedule.revoked);
+        return (
+            schedule.totalAmount,
+            schedule.releasedAmount,
+            schedule.startTime,
+            schedule.cliffDuration,
+            schedule.vestingDuration,
+            schedule.revoked
+        );
     }
 
     function computeReleasableAmount(address beneficiary) external view returns (uint256) {
@@ -239,8 +267,13 @@ contract ACTXVesting is Ownable2Step, ReentrancyGuard {
         return (schedule.totalAmount * timeFromStart) / schedule.vestingDuration;
     }
 
-    function getBeneficiaryCount() external view returns (uint256) { return beneficiaries.length; }
-    function getAllBeneficiaries() external view returns (address[] memory) { return beneficiaries; }
+    function getBeneficiaryCount() external view returns (uint256) {
+        return beneficiaries.length;
+    }
+
+    function getAllBeneficiaries() external view returns (address[] memory) {
+        return beneficiaries;
+    }
 
     function getTimeUntilCliff(address beneficiary) external view returns (uint256) {
         VestingSchedule memory schedule = vestingSchedules[beneficiary];

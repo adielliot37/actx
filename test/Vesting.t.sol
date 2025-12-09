@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {Test, console} from "forge-std/Test.sol";
-import {ACTXToken} from "../src/ACTXToken.sol";
-import {ACTXVesting} from "../src/Vesting.sol";
-import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
+import { Test, console } from "forge-std/Test.sol";
+import { ACTXToken } from "../src/ACTXToken.sol";
+import { ACTXVesting } from "../src/Vesting.sol";
+import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 
 /**
  * @title ACTXVestingTest
@@ -105,8 +105,7 @@ contract ACTXVestingTest is Test {
         vm.prank(owner);
         vesting.createVestingScheduleCustom(advisor, advisorAmount, startTime, customCliff, customDuration);
 
-        (,, uint256 vestingStart, uint256 cliffDuration, uint256 vestingDuration,) =
-            vesting.getVestingSchedule(advisor);
+        (,, uint256 vestingStart, uint256 cliffDuration, uint256 vestingDuration,) = vesting.getVestingSchedule(advisor);
 
         assertEq(vestingStart, startTime);
         assertEq(cliffDuration, customCliff);

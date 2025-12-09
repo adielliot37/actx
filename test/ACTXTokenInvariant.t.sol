@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {Test, console} from "forge-std/Test.sol";
-import {StdInvariant} from "forge-std/StdInvariant.sol";
-import {ACTXToken} from "../src/ACTXToken.sol";
-import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
+import { Test, console } from "forge-std/Test.sol";
+import { StdInvariant } from "forge-std/StdInvariant.sol";
+import { ACTXToken } from "../src/ACTXToken.sol";
+import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 
 /**
  * @title ACTXTokenHandler
@@ -61,10 +61,7 @@ contract ACTXTokenHandler is Test {
         ghost_totalDistributed += amount;
     }
 
-    function transfer(uint256 fromIndex, uint256 toIndex, uint256 amount)
-        external
-        countCall("transfer")
-    {
+    function transfer(uint256 fromIndex, uint256 toIndex, uint256 amount) external countCall("transfer") {
         address from = actors[bound(fromIndex, 0, actors.length - 1)];
         address to = actors[bound(toIndex, 0, actors.length - 1)];
 
@@ -157,9 +154,8 @@ contract ACTXTokenInvariantTest is StdInvariant, Test {
 
         // Deploy token
         implementation = new ACTXToken();
-        bytes memory initData = abi.encodeWithSelector(
-            ACTXToken.initialize.selector, treasury, reservoir, 200, INITIAL_REWARD_POOL
-        );
+        bytes memory initData =
+            abi.encodeWithSelector(ACTXToken.initialize.selector, treasury, reservoir, 200, INITIAL_REWARD_POOL);
         proxy = new ERC1967Proxy(address(implementation), initData);
         token = ACTXToken(address(proxy));
 
@@ -281,9 +277,8 @@ contract ACTXTokenStatefulInvariant is Test {
         }
 
         ACTXToken implementation = new ACTXToken();
-        bytes memory initData = abi.encodeWithSelector(
-            ACTXToken.initialize.selector, treasury, reservoir, 200, 10_000_000 * 10 ** 18
-        );
+        bytes memory initData =
+            abi.encodeWithSelector(ACTXToken.initialize.selector, treasury, reservoir, 200, 10_000_000 * 10 ** 18);
         proxy = new ERC1967Proxy(address(implementation), initData);
         token = ACTXToken(address(proxy));
     }

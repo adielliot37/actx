@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {Script, console} from "forge-std/Script.sol";
-import {ACTXToken} from "../src/ACTXToken.sol";
-import {ACTXAirdrop} from "../src/Airdrop.sol";
-import {ACTXVesting} from "../src/Vesting.sol";
-import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
+import { Script, console } from "forge-std/Script.sol";
+import { ACTXToken } from "../src/ACTXToken.sol";
+import { ACTXAirdrop } from "../src/Airdrop.sol";
+import { ACTXVesting } from "../src/Vesting.sol";
+import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 
 /**
  * @title DeployACTX
@@ -69,11 +69,7 @@ contract DeployACTX is Script {
 
         // 2. Prepare initialization data
         bytes memory initData = abi.encodeWithSelector(
-            ACTXToken.initialize.selector,
-            treasury,
-            reservoir,
-            INITIAL_TAX_RATE_BP,
-            REWARD_POOL_ALLOCATION
+            ACTXToken.initialize.selector, treasury, reservoir, INITIAL_TAX_RATE_BP, REWARD_POOL_ALLOCATION
         );
 
         // 3. Deploy ERC1967 Proxy

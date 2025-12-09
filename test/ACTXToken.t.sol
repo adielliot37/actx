@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {Test, console} from "forge-std/Test.sol";
-import {ACTXToken} from "../src/ACTXToken.sol";
-import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
-import {IERC20Errors} from "@openzeppelin/contracts/interfaces/draft-IERC6093.sol";
+import { Test, console } from "forge-std/Test.sol";
+import { ACTXToken } from "../src/ACTXToken.sol";
+import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
+import { IERC20Errors } from "@openzeppelin/contracts/interfaces/draft-IERC6093.sol";
 
 /**
  * @title ACTXTokenTest
@@ -28,9 +28,7 @@ contract ACTXTokenTest is Test {
     uint256 public constant TOTAL_SUPPLY = 100_000_000 * 10 ** 18;
 
     // Events to test
-    event RewardDistributed(
-        address indexed recipient, uint256 amount, uint256 rewardPoolRemaining, uint256 timestamp
-    );
+    event RewardDistributed(address indexed recipient, uint256 amount, uint256 rewardPoolRemaining, uint256 timestamp);
     event TaxRateUpdated(uint256 oldRate, uint256 newRate);
     event ReservoirAddressUpdated(address indexed oldReservoir, address indexed newReservoir);
     event TaxCollected(address indexed from, address indexed to, uint256 taxAmount, uint256 netAmount);
@@ -120,7 +118,11 @@ contract ACTXTokenTest is Test {
     function test_Initialize_RevertOnTaxRateTooHigh() public {
         ACTXToken newImpl = new ACTXToken();
         bytes memory initData = abi.encodeWithSelector(
-            ACTXToken.initialize.selector, treasury, reservoir, 1001, REWARD_POOL_ALLOCATION // 10.01% exceeds max
+            ACTXToken.initialize.selector,
+            treasury,
+            reservoir,
+            1001,
+            REWARD_POOL_ALLOCATION // 10.01% exceeds max
         );
         vm.expectRevert(abi.encodeWithSelector(ACTXToken.TaxRateTooHigh.selector, 1001, 1000));
         new ERC1967Proxy(address(newImpl), initData);
@@ -163,7 +165,9 @@ contract ACTXTokenTest is Test {
         uint256 excessAmount = REWARD_POOL_ALLOCATION + 1;
 
         vm.prank(rewardManager);
-        vm.expectRevert(abi.encodeWithSelector(ACTXToken.InsufficientRewardPool.selector, excessAmount, REWARD_POOL_ALLOCATION));
+        vm.expectRevert(
+            abi.encodeWithSelector(ACTXToken.InsufficientRewardPool.selector, excessAmount, REWARD_POOL_ALLOCATION)
+        );
         token.distributeReward(user1, excessAmount);
     }
 
@@ -488,24 +492,24 @@ contract ACTXTokenTest is Test {
         // If amount = 9, tax = 0, net = 9 (no tax due to rounding)
         // For net to be 0, we need amount where 10% rounds up to amount
         // Actually with integer division, we need to be more careful
-        
+
         // With current implementation, net = 0 only if amount <= tax
         // For 10% tax: amount * 9000 / 10000 = 0 only when amount < 10000/9000 ≈ 1.11
         // So amount of 1 should result in net = 0
-        
+
         // The contract checks if netAmount == 0, not taxAmount
         // With tax 10% and amount 1: tax = 1 * 1000 / 10000 = 0, net = 1
         // So we need to test with a scenario where net becomes 0
-        
+
         // Actually with basis points calculation:
         // taxAmount = (1 * 1000) / 10000 = 0 (integer division)
         // netAmount = 1 - 0 = 1
         // So it won't revert for amount 1 with 10% tax
-        
+
         // Let's test that small transfers work correctly instead
         vm.prank(user1);
         token.transfer(user2, 1); // This should work, user2 gets 1 wei
-        
+
         assertEq(token.balanceOf(user2), 1);
     }
 
@@ -565,9 +569,8 @@ contract ACTXTokenUpgradeTest is Test {
         reservoir = makeAddr("reservoir");
 
         implementation = new ACTXToken();
-        bytes memory initData = abi.encodeWithSelector(
-            ACTXToken.initialize.selector, treasury, reservoir, 200, 10_000_000 * 10 ** 18
-        );
+        bytes memory initData =
+            abi.encodeWithSelector(ACTXToken.initialize.selector, treasury, reservoir, 200, 10_000_000 * 10 ** 18);
         proxy = new ERC1967Proxy(address(implementation), initData);
         token = ACTXToken(address(proxy));
     }
@@ -597,7 +600,7 @@ contract ACTXTokenUpgradeTest is Test {
         // Distribute some rewards first
         address user = makeAddr("user");
         // Note: Treasury already has REWARD_MANAGER_ROLE from initialization, no need to grant
-        
+
         vm.prank(treasury);
         token.distributeReward(user, 1000 * 10 ** 18);
 
