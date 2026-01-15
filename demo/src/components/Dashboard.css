@@ -1,0 +1,166 @@
+.dashboard {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.loading {
+  text-align: center;
+  padding: 4rem;
+  font-size: 1.2rem;
+  color: #aaa;
+}
+
+.connect-prompt {
+  text-align: center;
+  padding: 4rem;
+  background: #111;
+  border: 1px solid #333;
+  max-width: 600px;
+  margin: 4rem auto;
+}
+
+.connect-prompt h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  letter-spacing: 0.1em;
+}
+
+.connect-prompt p {
+  color: #aaa;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.connect-btn-large {
+  background: #fff;
+  color: #000;
+  border: none;
+  padding: 1.2rem 3rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.connect-btn-large:hover {
+  background: #aaa;
+}
+
+.dashboard-header {
+  margin-bottom: 3rem;
+}
+
+.dashboard-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-header p {
+  color: #aaa;
+  font-size: 0.95rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.feature-card {
+  background: #111;
+  border: 1px solid #333;
+  padding: 2rem;
+  transition: all 0.3s;
+}
+
+.feature-card:hover {
+  border-color: #fff;
+  transform: translateY(-2px);
+}
+
+.feature-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+.feature-card h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+}
+
+.feature-card p {
+  color: #aaa;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.architecture-diagram {
+  margin-top: 4rem;
+  padding: 2rem;
+  background: #111;
+  border: 1px solid #333;
+}
+
+.architecture-diagram h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  letter-spacing: 0.1em;
+}
+
+.flow-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.flow-step {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.flow-box {
+  background: #000;
+  border: 2px solid #fff;
+  padding: 1.5rem 2rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  min-width: 150px;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.flow-box:hover {
+  background: #1a1a1a;
+}
+
+.flow-arrow {
+  font-size: 1.5rem;
+  color: #fff;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .flow-diagram {
+    flex-direction: column;
+  }
+
+  .flow-arrow {
+    transform: rotate(90deg);
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

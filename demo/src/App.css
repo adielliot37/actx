@@ -1,0 +1,119 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: #000;
+  border-bottom: 2px solid #fff;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.header-content h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  margin-bottom: 0.5rem;
+}
+
+.header-content p {
+  font-size: 0.9rem;
+  color: #aaa;
+  letter-spacing: 0.1em;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.status-dot {
+  width: 12px;
+  height: 12px;
+  background: #0f0;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.nav {
+  display: flex;
+  gap: 0;
+  background: #111;
+  border-bottom: 1px solid #333;
+  overflow-x: auto;
+}
+
+.nav button {
+  background: transparent;
+  border: none;
+  color: #aaa;
+  padding: 1.2rem 2rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+
+.nav button:hover {
+  color: #fff;
+  background: #1a1a1a;
+}
+
+.nav button.active {
+  color: #fff;
+  border-bottom-color: #fff;
+  background: #1a1a1a;
+}
+
+.main {
+  flex: 1;
+  padding: 2rem;
+  background: #0a0a0a;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .header-content h1 {
+    font-size: 2rem;
+  }
+
+  .nav {
+    flex-wrap: wrap;
+  }
+
+  .nav button {
+    padding: 1rem 1.5rem;
+    font-size: 0.85rem;
+  }
+
+  .main {
+    padding: 1rem;
+  }
+}
+

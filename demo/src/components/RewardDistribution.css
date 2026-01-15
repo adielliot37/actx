@@ -1,0 +1,282 @@
+.reward-distribution {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.alert {
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid;
+  font-size: 0.9rem;
+}
+
+.alert.error {
+  background: #1a0000;
+  border-color: #ff4444;
+  color: #ff4444;
+}
+
+.alert.success {
+  background: #001a00;
+  border-color: #44ff44;
+  color: #44ff44;
+}
+
+.alert.warning {
+  background: #1a1a00;
+  border-color: #ffff44;
+  color: #ffff44;
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.tx-link {
+  color: #0f0;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.tx-link:hover {
+  text-decoration: underline;
+}
+
+.section-header {
+  margin-bottom: 2rem;
+}
+
+.section-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+
+.section-header p {
+  color: #aaa;
+  font-size: 0.95rem;
+}
+
+.mode-toggle {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.mode-toggle button {
+  flex: 1;
+  background: #111;
+  border: 1px solid #333;
+  color: #aaa;
+  padding: 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.mode-toggle button:hover {
+  border-color: #fff;
+  color: #fff;
+}
+
+.mode-toggle button.active {
+  border-color: #fff;
+  color: #fff;
+  background: #1a1a1a;
+}
+
+.reward-form {
+  background: #111;
+  border: 1px solid #333;
+  padding: 2rem;
+  margin-bottom: 3rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.form-group input {
+  width: 100%;
+  background: #000;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 1rem;
+  font-size: 1rem;
+  font-family: 'Courier New', monospace;
+  transition: all 0.3s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #fff;
+}
+
+.form-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #0a0a0a;
+  border: 1px solid #222;
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.submit-btn {
+  width: 100%;
+  background: #fff;
+  color: #000;
+  border: none;
+  padding: 1.2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.submit-btn:hover {
+  background: #aaa;
+}
+
+.batch-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.batch-header h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.add-btn {
+  background: #111;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.add-btn:hover {
+  border-color: #fff;
+  background: #1a1a1a;
+}
+
+.batch-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.batch-input {
+  background: #000;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 0.8rem;
+  font-size: 0.9rem;
+  font-family: 'Courier New', monospace;
+}
+
+.batch-input:focus {
+  outline: none;
+  border-color: #fff;
+}
+
+.recent-rewards {
+  background: #111;
+  border: 1px solid #333;
+  padding: 2rem;
+}
+
+.recent-rewards h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
+}
+
+.rewards-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.reward-item {
+  background: #000;
+  border: 1px solid #333;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s;
+}
+
+.reward-item:hover {
+  border-color: #fff;
+}
+
+.reward-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.reward-address {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.reward-amount {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.reward-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.tx-hash {
+  font-family: 'Courier New', monospace;
+}
+
+.empty-state {
+  text-align: center;
+  color: #666;
+  padding: 3rem;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .batch-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+

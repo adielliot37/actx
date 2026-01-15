@@ -228,7 +228,7 @@ contract ACTXAirdrop is Ownable2Step, ReentrancyGuard, Pausable {
     function canClaim(uint256 campaignId, address claimant, uint256 amount, bytes32[] calldata merkleProof)
         external
         view
-        returns (bool canClaim, string memory reason)
+        returns (bool eligible, string memory reason)
     {
         if (campaignId >= campaignCount) return (false, "Invalid campaign");
 
